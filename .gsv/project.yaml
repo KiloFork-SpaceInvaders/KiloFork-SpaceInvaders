@@ -1,0 +1,22 @@
+schema: gsv.project/v1
+id: kilofork-space-invaders
+name: KiloFork-SpaceInvaders
+repo: KiloFork-SpaceInvaders/KiloFork-SpaceInvaders
+domain: application
+maturity: experimental
+build_profile: python
+os: [windows, linux, macos]
+privacy: public
+agent_policy: supervised
+release: manual
+authority: deterministic 3044 game core, controller seam, local co-op, headless simulation and training/evaluation contracts
+notes: >
+  Downstream fork/evolution lane. Preserve Neural Lab attribution and MIT history.
+  The original upstream remains the lineage/control specimen. Gameplay rules belong
+  in the deterministic core; renderer/input/audio remain adapters. Player Two and
+  wider GSV systems are consumers/research relatives, not runtime source dependencies.
+upstream:
+  - {name: theneurallab/tiktok-space-invaders, via: git lineage, required: true, note: "Original Neural Lab project and assets; preserve MIT attribution/history"}
+downstream:
+  - {name: headless-simulation, surface: space_invaders/simulate.py, consumers: [tests, policy-evaluation, dataset-recording]}
+  - {name: controller-contract, surface: space_invaders/core.py, consumers: [human-input, heuristic-ai, replay, future-learned-policies]}
