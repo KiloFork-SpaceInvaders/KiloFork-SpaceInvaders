@@ -1,0 +1,28 @@
+name: Shmup transition contract
+on:
+  pull_request:
+    paths:
+      - "space_invaders/core.py"
+      - "space_invaders/training.py"
+      - "space_invaders/features.py"
+      - "tests/test_transition_determinism.py"
+      - ".github/workflows/transition-conformance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  producer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Check deterministic headless transition provenance
+        run: python -m unittest discover -s tests -p 'test_transition_determinism.py' -v
